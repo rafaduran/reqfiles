@@ -3,7 +3,4 @@ from setuptools import setup
 
 import reqfiles
 
-REQUIRES = {}
-
-
-setup(d2to1=True, version=reqfiles.__version__, **REQUIRES)
+setup(d2to1=True, version=reqfiles.__version__, **reqfiles.Reqfiles())

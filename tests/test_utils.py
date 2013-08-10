@@ -9,7 +9,7 @@ from reqfiles import utils
 from . import common
 
 
-@pytest.mark.parametrize(('root', 'files'), common.REQ_FIXTURES)
+@pytest.mark.parametrize(('root', 'files'), common.REQFILES_FIXTURES)
 def test_find_req_dir(root, files):
     '''Tests :py:func:`find_req_dir`.'''
     if root is None:
