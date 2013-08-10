@@ -3,6 +3,8 @@ import glob
 import logging
 import os
 
+__all__ = ('find_req_files', 'REQ_PATTERNS')
+
 LOG = logging.getLogger(__name__)
 REQ_PATTERNS = ('require*/*.txt', 'require*.txt')
 
