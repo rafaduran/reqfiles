@@ -6,7 +6,7 @@ import os
 __all__ = ('find_req_files', 'REQ_PATTERNS')
 
 LOG = logging.getLogger(__name__)
-REQ_PATTERNS = ('require*/*.txt', 'require*.txt')
+REQ_PATTERNS = ('require*/*.txt', 'require*.txt', '*require*.txt')
 
 
 def find_req_files(root=None):
