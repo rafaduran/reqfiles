@@ -1,8 +1,6 @@
 '''Python requirement files core.'''
 import collections
 
-import six
-
 from .parsers import Parser
 from . import utils
 
@@ -64,4 +62,4 @@ class Reqfiles(collections.Mapping):
         return len(self._data)
 
     def __iter__(self):
-        return six.iterkeys(self._data)
+        return iter(self._data)
