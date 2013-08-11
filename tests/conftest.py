@@ -12,3 +12,9 @@ def reqfile():
 def parser():
     from reqfiles import core
     return core.Parser()
+
+
+@pytest.fixture
+def classifier():
+    from reqfiles import classifiers
+    return classifiers.BaseClassifier()
