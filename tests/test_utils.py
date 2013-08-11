@@ -1,4 +1,5 @@
 '''Python requirement files helper utils tests.'''
+import abc
 import os
 
 import mock
@@ -32,3 +33,22 @@ def test_find_req_dir(root, files):
     with mock.patch('glob.glob', side_effect=([], [], [])) as mocked:
         assert [] == utils.find_req_files(root)
     assert mocked.call_args_list == [mock.call(target) for target in targets]
+
+
+Meta = utils.PluginMount('Meta', (object,), {'test': abc.abstractmethod(lambda x: x)})
+
+
+def test_plugin_mount():
+    '''Tests PluginMount metaclass'''
+    assert 0 == len(Meta.plugins)
+
+    with pytest.raises(TypeError):
+        class A(Meta): pass
+        A()
+    assert 1 == len(Meta.plugins)
+
+    class B(Meta):
+        def test(self, value):
+            return value
+    assert 2 == len(Meta.plugins)
+    assert B().test(1) == 1
