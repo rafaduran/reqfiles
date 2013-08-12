@@ -69,7 +69,8 @@ def classify(filename):
 
 # Metaclass trick to get python2/3 compat. Abstract methods must be defined
 # into the mataclass instead of the base classes, so that ABCMeta can do it's
-# magic.
+# magic. See http://goo.gl/azOTtq for further information about metaclasses in
+# Python 2 and Python 3.
 Classifier = utils.PluginMount('Classifier',
                                (BaseClassifier,),
                                {
