@@ -1,7 +1,11 @@
 '''Python requirement files classifiers.'''
 import abc
+import re
 
 from . import utils
+
+__all__ = ('classify', 'Classifier', 'RegexClassifierMixin',
+           'RequirementsDirectoryClassifier')
 
 
 class BaseClassifier(object):
@@ -78,3 +82,21 @@ Classifier = utils.PluginMount('Classifier',
                                    'classify': staticmethod(classify),
                                    'check': abc.abstractmethod(check),
                                })
+
+
+class RegexClassifierMixin(object):
+    regex = None
+
+    def get_regex(self):
+        if not self.regex:
+            raise ValueError
+        return self.regex
+
+    def check(self, filename):
+        match = self.get_regex().match(filename)
+        if match:
+            return self.get(match.groups()[0])
+
+
+class RequirementsDirectoryClassifier(RegexClassifierMixin, Classifier):
+    regex = re.compile(r'requirements/(?P<name>\w+).txt')

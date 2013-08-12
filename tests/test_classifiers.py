@@ -1,4 +1,6 @@
 '''Python requirement files classifiers tests.'''
+import re
+
 import mock
 import pytest
 
@@ -24,3 +26,27 @@ def test_classify():
     p1.check.asert_called_once_with('name')
     p2.assert_called_once_with()
     p2.check.asert_called_once_with('name')
+
+
+class FooClassifier(classifiers.RegexClassifierMixin, object):
+    regex = re.compile(r'requirements/(?P<name>foo).txt')
+
+    def get(self, name):
+        return 'install_requires', None
+
+
+class TestsRegexClassifierMixin(object):
+    def setup_method(self, name):
+        self.classifier = FooClassifier()
+
+    def test_check_match(self):
+        '''Tests FooClassifier match.'''
+        assert ('install_requires', None) == self.classifier.check('requirements/foo.txt')
+
+    def test_check_no_match(self):
+        assert None == self.classifier.check('requirements/spam.txt')
+
+    def test_no_regex_raises(self):
+        self.classifier.regex = None
+        with pytest.raises(ValueError):
+            self.classifier.check('something')
