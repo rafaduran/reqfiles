@@ -3,5 +3,4 @@
 # Pep 386
 __version__ = '0.0.1'
 
-from . core import *
-from . utils import *
+from .core import Reqfiles

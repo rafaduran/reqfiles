@@ -1,7 +1,10 @@
 '''Python requirement files core.'''
 import collections
 
+from pip import req as pipreq
+
 from .parsers import Parser
+from . import classifiers
 from . import utils
 
 __all__ = ('Parser', 'Reqfiles', 'SETUPTOOLS_KEYS')
@@ -23,6 +26,7 @@ class Reqfiles(collections.Mapping):
     def __init__(self, root=None,
                  finder=utils.find_req_files,
                  parser=Parser,
+                 classifier=classifiers.classify,
                  eager=True):
         '''Look up for reqfiles and parses them.
 
@@ -34,6 +38,8 @@ class Reqfiles(collections.Mapping):
         self._reqfiles = set()
         self.finder = finder
         self.parser = parser()
+        self.classifier = classifier
+        self.links = []
         if eager:
             self.search_and_parse(root)
 
@@ -41,6 +47,14 @@ class Reqfiles(collections.Mapping):
         '''
         Parse reqfiles and sources internal data with requirements found.
         '''
+        for filename in reqfiles:
+            # classify
+            keyword, key = self.classifier(filename)
+            for req in pipreq.parse_requirements(filename):
+                reqstring, link = self.parser.parse(req)
+                if link:
+                    self.links.append(link)
+                # update self._data
 
     def search(self, root):
         '''Search for requirement files.'''
@@ -51,8 +65,9 @@ class Reqfiles(collections.Mapping):
         This method is where all starts, thought all the heavy work is done by
         :py:meth:`search` and :py:meth:`parse`.
         '''
-        self._reqfiles |= self.search(root)
-        self.parse(self._reqfiles)
+        found = self.search(root)
+        self.parse(found - self._reqfiles)
+        self._reqfiles |= found
         return self
 
     def __getitem__(self, key):

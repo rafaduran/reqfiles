@@ -99,4 +99,4 @@ class RegexClassifierMixin(object):
 
 
 class RequirementsDirectoryClassifier(RegexClassifierMixin, Classifier):
-    regex = re.compile(r'requirements/(?P<name>\w+).txt')
+    regex = re.compile(r'.*requirements/(?P<name>\w+).txt')
