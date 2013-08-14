@@ -70,3 +70,30 @@ def test_reqfile_eager():
     with mock.patch('reqfiles.core.Reqfiles.search_and_parse') as mocked:
         core.Reqfiles('root')
     mocked.assert_called_once_with('root')
+
+
+def test_reqfile_search_and_parse(reqfile):
+    '''Test search_and_parse searchs and parses.'''
+    with mock.patch.object(reqfile, 'search') as search:
+        with mock.patch.object(reqfile, 'parse') as parse:
+            found = set(('a', 'b'))
+            search.return_value = found
+            # check it returns itself
+            assert reqfile == reqfile.search_and_parse('root')
+        search.assert_called_once_with('root')
+        parse.assert_called_once_with(found)
+        assert reqfile._reqfiles == found
+
+
+def test_reqfile_search_and_parse_chaining(reqfile):
+    '''Test search_and_parse searchs and parses.'''
+    with mock.patch.object(reqfile, 'search') as search:
+        with mock.patch.object(reqfile, 'parse') as parse:
+            found1 = set(('a', 'b'))
+            found2 = set(('c', 'b'))
+            search.side_effect = (found1, found2)
+            # check it returns itself
+            reqfile == reqfile.search_and_parse('root1').search_and_parse('root2')
+        assert search.call_count == 2
+        assert parse.call_count == 2
+        assert reqfile._reqfiles == set(('a', 'b', 'c'))
