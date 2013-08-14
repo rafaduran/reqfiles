@@ -63,3 +63,10 @@ def test_reqfiles_parse_extras(reqfile, reqs, links):
         },
     })
     assert dict(reqfile) == expected
+
+
+def test_reqfile_eager():
+    '''Test eager search and parsing.'''
+    with mock.patch('reqfiles.core.Reqfiles.search_and_parse') as mocked:
+        core.Reqfiles('root')
+    mocked.assert_called_once_with('root')
