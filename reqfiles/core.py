@@ -55,6 +55,12 @@ class Reqfiles(collections.Mapping):
                 if link:
                     self.links.append(link)
                 # update self._data
+                if keyword == 'extras_require':
+                    if self._data['extras_require'].get(key, None) is None:
+                        self._data['extras_require'][key] = []
+                    self._data['extras_require'][key].append(reqstring)
+                else:
+                    self._data[keyword].append(reqstring)
 
     def search(self, root):
         '''Search for requirement files.'''

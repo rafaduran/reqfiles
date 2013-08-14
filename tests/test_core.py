@@ -31,3 +31,35 @@ def test_reqfiles_parse(reqfile, reqs, links):
     mocked.assert_called_once_with(reqfiles[0])
     assert 2 == len(reqfile.links)
     assert sorted(links) == sorted(reqfile.links)
+    expected = dict(core.SETUPTOOLS_KEYS)
+    expected.update({
+        'install_requires': [
+            'foo',
+            'spam==2.0',
+            'bacon>=1.3.1,<2.0',
+            'project==1.2.3a4',
+            'project-name',
+        ],
+    })
+    assert dict(reqfile) == expected
+
+
+def test_reqfiles_parse_extras(reqfile, reqs, links):
+    '''Tests parse sources internal data.'''
+    reqfiles = ['requirements/ci.txt']
+    with mock.patch('pip.req.parse_requirements') as mocked:
+        mocked.return_value = reqs
+        reqfile.parse(reqfiles)
+    expected = dict(core.SETUPTOOLS_KEYS)
+    expected.update({
+        'extras_require': {
+            'ci': [
+                'foo',
+                'spam==2.0',
+                'bacon>=1.3.1,<2.0',
+                'project==1.2.3a4',
+                'project-name',
+            ],
+        },
+    })
+    assert dict(reqfile) == expected
