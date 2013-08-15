@@ -25,4 +25,9 @@ setup(name='reqfiles',
       ],
       keywords='Pip Requirements Setuptools Distutils',
       packages=find_packages(exclude=('tests',)),
+      entry_points={
+          'distutils.setup_keywords': [
+              'reqfiles = reqfiles.setuptools:reqfiles'
+          ]
+      },
       **reqfiles.Reqfiles())

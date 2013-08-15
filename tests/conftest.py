@@ -28,5 +28,19 @@ def reqs():
 
 
 @pytest.fixture
+def reqstrings():
+    return [rstring for _ , (rstring, _) in common.REQ_FIXTURES]
+
+
+@pytest.fixture
 def links():
     return [link for req, (reqstring, link) in common.REQ_FIXTURES if link]
+
+
+@pytest.fixture
+def sreqfile(reqfile, reqstrings, links):
+    reqfile._data['install_requires'] = reqstrings[:2]
+    reqfile._data['tests_require'] = reqstrings[3:4]
+    reqfile._data['extras_require']['ci'] = reqstrings[4:]
+    reqfile._data['dependency_links'] = links
+    return reqfile
