@@ -9,7 +9,7 @@ News
 0.0.1
 -----
 
-*Release date: 15-Mar-2010*
+*Release date: 15-Aug-2013*
 
-* Initial release
+* Initial alpha release
 

@@ -1,3 +1,5 @@
+More classification plugins
+Do not crash for reqfiles not classified
 Install/tests/extras req keywords as extras
 Python version specific requirements
 Check find_links keyword
