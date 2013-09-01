@@ -2,6 +2,8 @@
 from distutils import version
 import logging
 
+from . import exceptions as exc
+
 LOG = logging.getLogger(__name__)
 
 
@@ -22,6 +24,8 @@ class Parser(object):
             link or ``None``.
         '''
         if not req.editable:
+            if not req.req:
+                raise exc.ParserError
             return str(req.req), None
 
         req_ver = self._get_editable_version(req)
