@@ -1,6 +1,7 @@
 '''Python requirement files parsers.'''
 from distutils import version
 import logging
+from pip import req as pipreq
 
 from . import exceptions as exc
 
@@ -11,6 +12,27 @@ class Parser(object):
     '''
     Provides the requirement files parsing.
     '''
+    def parse_file(self, filename):
+        """Parses given file by filename.
+
+        Params:
+            ``filename``: filename (with path) of the file to being parsed
+
+        Returns:
+            ``req_links``: iterable of two-tuple where the first element is the
+            string representation of the given requeriment and the second is a
+            find link or ``None``.
+        """
+        reqs = []
+        links = []
+        for req in pipreq.parse_requirements(filename):
+            reqstr, link = self.parse(req)
+            if link:
+                links.append(link)
+
+            reqs.append(reqstr)
+        return reqs, links
+
     def parse(self, req):
         '''Takes a :py:class:`pip.req.InstallRequirement` and returns
         requirement string and find link.
