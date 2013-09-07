@@ -3,3 +3,5 @@ mock
 pytest
 pytest-cov
 pytest-xdist
+ipdb
+-e git+https://github.com/mverteuil/pytest-ipdb.git#egg=pytest-ipdb
