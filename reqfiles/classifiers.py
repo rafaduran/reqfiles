@@ -1,11 +1,13 @@
 '''Python requirement files classifiers.'''
 import abc
 import re
+import os
 
 from . import utils
 
 __all__ = ('classify', 'Classifier', 'RegexClassifierMixin',
-           'RequirementsDirectoryClassifier')
+           'RequirementsDirectoryClassifier', 'NamesClassifierMixin',
+           'RequirementsFilesClassifier', 'Requirements')
 
 
 class BaseClassifier(object):
@@ -95,8 +97,28 @@ class RegexClassifierMixin(object):
     def check(self, filename):
         match = self.get_regex().match(filename)
         if match:
-            return self.get(match.groups()[0])
+            return self.get(match.groupdict()['name'])
+
+
+class NamesClassifierMixin(object):
+    names = None
+    key_keyword = None
+
+    def check(self, filename):
+        if not (self.names and self.key_keyword):
+            raise ValueError
+        if os.path.basename(filename) in self.names:
+            return self.key_keyword
 
 
 class RequirementsDirectoryClassifier(RegexClassifierMixin, Classifier):
     regex = re.compile(r'.*requirements/(?P<name>\w+).txt')
+
+
+class RequirementsFilesClassifier(RegexClassifierMixin, Classifier):
+    regex = re.compile(r'(.*[\\/])?(?P<name>[a-zA-Z]+)[-_]requirements.txt')
+
+
+class Requirements(NamesClassifierMixin):
+    names = ('requirements.txt', 'requires.txt')
+    key_keyword = ('install_requires', None)

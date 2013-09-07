@@ -50,3 +50,38 @@ class TestsRegexClassifierMixin(object):
         self.classifier.regex = None
         with pytest.raises(ValueError):
             self.classifier.check('something')
+
+
+class TestNamesClassifierMixin(object):
+    def setup_method(self, name):
+        self.classifier = classifiers.Requirements()
+
+    def test_check_match(self):
+        """Tests FooClassifier match."""
+        assert ('install_requires', None) == self.classifier.check('requirements.txt')
+        assert ('install_requires', None) == self.classifier.check('requires.txt')
+        assert ('install_requires', None) == self.classifier.check('directory/requires.txt')
+
+    def test_check_no_match(self):
+        assert None == self.classifier.check('requirementss.txt')
+
+    def test_no_names_raises(self):
+        self.classifier.names = None
+        with pytest.raises(ValueError):
+            self.classifier.check('something')
+
+    def test_no_key_keyword_raises(self):
+        self.classifier.key_keyword = None
+        with pytest.raises(ValueError):
+            self.classifier.check('something')
+
+
+@pytest.mark.parametrize(
+    ('filename', 'key_keyword'),
+    (('directory/tests_requirements.txt', ('tests_require', None)),
+     ('ci-requirements.txt', ('extras_require', 'ci')),
+     ('directory\dev-requirements.txt', ('extras_require', 'dev')),)
+)
+def test_requirements_files_classifier(rfc_classifier, filename, key_keyword):
+    """Tests RequirementsFilesClassifier classifier."""
+    assert rfc_classifier.check(filename) == key_keyword

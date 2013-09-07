@@ -44,3 +44,9 @@ def sreqfile(reqfile, reqstrings, links):
     reqfile._data['extras_require']['ci'] = reqstrings[4:]
     reqfile._data['dependency_links'] = links
     return reqfile
+
+
+@pytest.fixture
+def rfc_classifier():
+    from reqfiles import classifiers
+    return classifiers.RequirementsFilesClassifier()
