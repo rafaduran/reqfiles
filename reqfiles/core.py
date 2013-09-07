@@ -3,7 +3,7 @@ import collections
 
 from pip import req as pipreq
 
-from .parsers import Parser
+from . import parsers
 from . import classifiers
 from . import utils
 
@@ -14,7 +14,7 @@ SETUPTOOLS_KEYS = (
     ('tests_require', []),
     ('setup_requires', []),
     ('extras_require', {}),
-    ('dependency_links', []),
+    ('dependency_links', set()),
 )
 
 
@@ -25,7 +25,7 @@ class Reqfiles(collections.Mapping):
     '''
     def __init__(self, root=None,
                  finder=utils.find_req_files,
-                 parser=Parser,
+                 parser=parsers.Parser,
                  classifier=classifiers.classify,
                  eager=True):
         '''Look up for reqfiles and parses them.
@@ -39,7 +39,6 @@ class Reqfiles(collections.Mapping):
         self.finder = finder
         self.parser = parser()
         self.classifier = classifier
-        self.links = []
         if eager:
             self.search_and_parse(root)
 
@@ -53,7 +52,7 @@ class Reqfiles(collections.Mapping):
             for req in pipreq.parse_requirements(filename):
                 reqstring, link = self.parser.parse(req)
                 if link:
-                    self.links.append(link)
+                    self._data['dependency_links'].add(link)
                 # update self._data
                 if keyword == 'extras_require':
                     if self._data['extras_require'].get(key, None) is None:

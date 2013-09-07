@@ -28,9 +28,8 @@ def test_reqfiles_parse(reqfile, reqs, links):
     with mock.patch('pip.req.parse_requirements') as mocked:
         mocked.return_value = reqs
         reqfile.parse(reqfiles)
+    assert len(links) > 0
     mocked.assert_called_once_with(reqfiles[0])
-    assert 2 == len(reqfile.links)
-    assert sorted(links) == sorted(reqfile.links)
     expected = dict(core.SETUPTOOLS_KEYS)
     expected.update({
         'install_requires': [
@@ -40,6 +39,7 @@ def test_reqfiles_parse(reqfile, reqs, links):
             'project==1.2.3a4',
             'project-name',
         ],
+        'dependency_links': set(links),
     })
     assert dict(reqfile) == expected
 
