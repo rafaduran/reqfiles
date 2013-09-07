@@ -12,8 +12,8 @@ def reqfile():
 
 @pytest.fixture
 def parser():
-    from reqfiles import core
-    return core.Parser()
+    from reqfiles import parsers
+    return parsers.Parser()
 
 
 @pytest.fixture
@@ -29,7 +29,7 @@ def reqs():
 
 @pytest.fixture
 def reqstrings():
-    return [rstring for _ , (rstring, _) in common.REQ_FIXTURES]
+    return [rstring for _, (rstring, _) in common.REQ_FIXTURES]
 
 
 @pytest.fixture
