@@ -8,6 +8,6 @@ install:
   - pip install -r requirements/tests.txt --use-mirrors
   - pip install coveralls --use-mirrors
 # command to run tests
-script: py.test --cov reqfiles --cov-report term-missing
+script: py.test --cov reqfiles --cov-report term-missing && flake8 reqfiles
 after_success:
   - COVERALLS_REPO_TOKEN=b8EvySSmckK3xv80IOS4ILIKOQIufpwTM coveralls
