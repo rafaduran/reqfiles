@@ -6,8 +6,19 @@
 News
 ====
 
-0.0.1
------
+0.0.2a3
+-------
+
+*Release date: 8-Sep-2013*
+
+* Fix dependency links bugs
+
+* Add more classification plugins
+
+* Source code is now checked with flake8
+
+0.0.1a2
+-------
 
 *Release date: 15-Aug-2013*
 
