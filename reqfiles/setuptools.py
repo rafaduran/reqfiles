@@ -1,9 +1,9 @@
-'''Python requirement files setuptools integration.'''
+"""Python requirement files setuptools integration."""
 from . import core
 
 
 def reqfiles(dist, attr, value):
-    '''Implements reqfiles setup() keyword.'''
+    """Implement reqfiles setup() keyword."""
     if not value:
         return
 

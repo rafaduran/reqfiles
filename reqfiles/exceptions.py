@@ -1,5 +1,6 @@
 """Reqfiles excptions module."""
 
+
 class ReqfilesException(Exception):
     """Base class for all Reqfiles exceptions."""
 

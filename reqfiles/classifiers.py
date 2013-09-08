@@ -1,4 +1,4 @@
-'''Python requirement files classifiers.'''
+"""Python requirement files classifiers."""
 import abc
 import re
 import os
@@ -11,9 +11,10 @@ __all__ = ('classify', 'Classifier', 'RegexClassifierMixin',
 
 
 class BaseClassifier(object):
-    '''
-    Given a ``reqfile`` filename it tries to classify it based on setup.py
-    requirement keywords: install_requires, tests_require,.... Some examples:
+    """Given a ``reqfile`` filename it tries to classify it.
+
+    Classification will be done based on setup.py requirement keywords:
+    install_requires, tests_require,.... Some examples:
 
     +------------------------+------------------+-----+
     | reqfile                | setup.py keyword | key |
@@ -30,12 +31,13 @@ class BaseClassifier(object):
     +------------------------+------------------+-----+
     | dev-requirements.txt   | extras_require   | dev |
     +------------------------+------------------+-----+
-    '''
+    """
+
     def get(self, name):
-        '''
-        Given a name returns the setup keyword and key (only for
-        ``extras_require``).
-        '''
+        """Given a name returns the setup keyword and a key.
+
+        Key is only used for ``extras_require`` keyword.
+        """
         if name == 'setup':
             return 'setup_requires', None
         elif name.startswith('test'):
@@ -47,26 +49,31 @@ class BaseClassifier(object):
 
 
 def check(self, filename):
-    '''
-    Returns the setup keyword if the given filename matchs this classification
-    rule or None.
+    """Returns the setup keyword if the given filename matchs criteria or None.
+
+    Criteria is the classification rules that provide all calssifiers.
 
     Params:
         ``filename``: File name to be classified.
 
     Returns:
         ``keyword``: setup keyword or ``None``.
-    '''
+    """
 
 
 def classify(filename):
-    '''
-    Given a filename will test all plugins, returning plugin setup keyword on
-    first match; ``None`` if there is no match.
+    """Given a filename will test all plugins, returning  first match.
 
     This function is also provided as
     :py:staticmeth:`reqfiles.classifiers.Classifier.classify` static method.
-    '''
+
+    Params:
+        ``filename``: File name to be classified.
+
+    Returns:
+        ``keyword_key``: Two-tuple with first argument as setup.py keyword and
+        a key (``extras_require`` only). Returns ``None`` if not match.
+    """
     for plugin in Classifier.plugins:
         keyword = plugin().check(filename)
         if keyword:
@@ -87,6 +94,7 @@ Classifier = utils.PluginMount('Classifier',
 
 
 class RegexClassifierMixin(object):
+    """Provide regex based classifcation."""
     regex = None
 
     def get_regex(self):
@@ -101,6 +109,7 @@ class RegexClassifierMixin(object):
 
 
 class NamesClassifierMixin(object):
+    """Provide list based classifcation."""
     names = None
     key_keyword = None
 
@@ -112,13 +121,16 @@ class NamesClassifierMixin(object):
 
 
 class RequirementsDirectoryClassifier(RegexClassifierMixin, Classifier):
+    """Match requirements/*.txt"""
     regex = re.compile(r'.*requirements/(?P<name>\w+).txt')
 
 
 class RequirementsFilesClassifier(RegexClassifierMixin, Classifier):
+    """Match *[-_]requirements.txt"""
     regex = re.compile(r'(.*[\\/])?(?P<name>[a-zA-Z]+)[-_]requirements.txt')
 
 
 class Requirements(NamesClassifierMixin):
+    """Match requires.txt, requirements.txt"""
     names = ('requirements.txt', 'requires.txt')
     key_keyword = ('install_requires', None)
