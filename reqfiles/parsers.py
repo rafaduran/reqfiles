@@ -1,4 +1,4 @@
-'''Python requirement files parsers.'''
+"""Python requirement files parsers."""
 from distutils import version
 import logging
 from pip import req as pipreq
@@ -9,11 +9,9 @@ LOG = logging.getLogger(__name__)
 
 
 class Parser(object):
-    '''
-    Provides the requirement files parsing.
-    '''
+    """Provide the requirement files parsing."""
     def parse_file(self, filename):
-        """Parses given file by filename.
+        """Parse given file by name.
 
         Params:
             ``filename``: filename (with path) of the file to being parsed
@@ -34,9 +32,9 @@ class Parser(object):
         return reqs, links
 
     def parse(self, req):
-        '''Takes a :py:class:`pip.req.InstallRequirement` and returns
-        requirement string and find link.
+        """Parse ``req`` and return requirement string and find link.
 
+        ``req`` is a :py:class:`pip.req.InstallRequirement` and returns
         Params:
             ``req``: :py:class:`pip.req.InstallRequirement` instance
 
@@ -44,7 +42,7 @@ class Parser(object):
             ``req_link``: two tuple where the first element is the string
             representation of the given requeriment and the second is a find
             link or ``None``.
-        '''
+        """
         if not req.editable:
             if not req.req:
                 raise exc.ParserError
@@ -56,10 +54,13 @@ class Parser(object):
         return str(req.req), req.url
 
     def _get_editable_version(self, req):
-        '''
-        Try to get the version string based on
+        """Parse version for an editable ``req``.
+
+        ``req`` is an instance of :py:class:`pip.req.InstallRequirement` from
+        :py:staticmethod:`pip.req.InstallRequirement.from_editable`. Version
+        string is parserd based on
         http://pythonhosted.org/setuptools/setuptools.html#dependencies-that-aren-t-in-pypi
-        '''
+        """
         ver_string = req.url.split('-')[-1]
         try:
             req_ver = str(version.StrictVersion(ver_string))

@@ -5,3 +5,7 @@ pytest-cov
 pytest-xdist
 ipdb
 -e git+https://github.com/mverteuil/pytest-ipdb.git#egg=pytest-ipdb
+flake8
+flake8-todo
+mccabe
+pep8-naming

@@ -1,4 +1,4 @@
-'''Python requirement files helper utils.'''
+"""Python requirement files helper utils."""
 import abc
 import glob
 import logging
@@ -11,8 +11,7 @@ REQ_PATTERNS = ('require*/*.txt', 'require*.txt', '*require*.txt')
 
 
 def find_req_files(root=None):
-    '''
-    Find the requirement directory relative to the given root.
+    """Find the requirement directory relative to the given root.
 
     Params:
         ``root``: root directory where look for requirements files. Current
@@ -20,7 +19,7 @@ def find_req_files(root=None):
 
     Returns:
         ``reqfiles``: requirement files found or empty list.
-    '''
+    """
     if root is None:
         # Suppose we are on setup.py and reqfiles are in the same directory
         root = os.path.abspath(os.path.curdir)
@@ -34,13 +33,14 @@ def find_req_files(root=None):
 
 
 class PluginMount(abc.ABCMeta):
-    '''
-    Meta class providing a pluggable interface inspired by Marty Alchin`s
-    `A Simple Plugin Framework`_
+    """Meta class providing a pluggable interface.
+
+    Inspired by Marty Alchin`s `A Simple Plugin Framework`_
 
     .. _A Simple Plugin Framework: http://martyalchin.com/2008/jan/10/simple-plugin-framework/
-    '''
-    def __init__(cls, name, bases, attrs):
+    """
+
+    def __init__(cls, name, bases, attrs):  # noqa
         if not hasattr(cls, 'plugins'):
             # This branch only executes when processing the mount point itself.
             # So, since this is a new plugin type, not an implementation, this
