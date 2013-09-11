@@ -1,8 +1,6 @@
 """Python requirement files core."""
 import collections
 
-from pip import req as pipreq
-
 from . import parsers
 from . import classifiers
 from . import utils
@@ -13,7 +11,7 @@ SETUPTOOLS_KEYS = (
     ('install_requires', []),
     ('tests_require', []),
     ('setup_requires', []),
-    ('extras_require', {}),
+    ('extras_require', collections.defaultdict(list)),
     ('dependency_links', set()),
 )
 
@@ -49,17 +47,13 @@ class Reqfiles(collections.Mapping):
         for filename in reqfiles:
             # classify
             keyword, key = self.classifier(filename)
-            for req in pipreq.parse_requirements(filename):
-                reqstring, link = self.parser.parse(req)
-                if link:
-                    self._data['dependency_links'].add(link)
-                # update self._data
-                if keyword == 'extras_require':
-                    if self._data['extras_require'].get(key, None) is None:
-                        self._data['extras_require'][key] = []
-                    self._data['extras_require'][key].append(reqstring)
-                else:
-                    self._data[keyword].append(reqstring)
+            reqstrs, links = self.parser.parse_file(filename)
+            [self._data['dependency_links'].add(link) for link in links]
+            # update self._data
+            if keyword == 'extras_require':
+                self._data['extras_require'][key].extend(reqstrs)
+            else:
+                self._data[keyword].extend(reqstrs)
 
     def search(self, root):
         """Search for requirement files."""
