@@ -73,7 +73,7 @@ def test_reqfile_eager():
 
 
 def test_reqfile_search_and_parse(reqfile):
-    '''Test search_and_parse searchs and parses.'''
+    '''Test search_and_parse searches and parses.'''
     with mock.patch.object(reqfile, 'search') as search:
         with mock.patch.object(reqfile, 'parse') as parse:
             found = set(('a', 'b'))
@@ -86,7 +86,7 @@ def test_reqfile_search_and_parse(reqfile):
 
 
 def test_reqfile_search_and_parse_chaining(reqfile):
-    '''Test search_and_parse searchs and parses.'''
+    '''Test search_and_parse searches and parses.'''
     with mock.patch.object(reqfile, 'search') as search:
         with mock.patch.object(reqfile, 'parse') as parse:
             found1 = set(('a', 'b'))
