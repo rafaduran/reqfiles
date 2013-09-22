@@ -5,6 +5,7 @@ from setuptools import setup, find_packages
 import reqfiles
 
 README = open('README.rst', 'rt').read()
+NEWS = open('NEWS.rst', 'rt').read()
 
 setup(name='reqfiles',
       version=reqfiles.__version__,
@@ -12,7 +13,7 @@ setup(name='reqfiles',
       author_email='rafadurancastaneda@gmail.com',
       url='https://github.com/rafaduran/reqfiles',
       description='Requirement files Setuptools integration',
-      long_description=README,
+      long_description=README + '\n\n' + NEWS,
       license='BSD',
       classifiers=[
           'Development Status :: 3 - Alpha',
