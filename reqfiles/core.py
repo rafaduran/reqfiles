@@ -32,7 +32,7 @@ class Reqfiles(collections.Mapping):
         Params:
             ``root``: Directory where search reqfiles.
 
-            ``finder``: Callable who actually does the the search.
+            ``finder``: Callable who actually does the search.
         """
         self._data = dict(SETUPTOOLS_KEYS)
         self._reqfiles = set()
