@@ -4,6 +4,7 @@ from pip import req as pipreq
 import pytest
 
 from reqfiles import exceptions as exc
+from reqfiles import parsers
 
 from . import common
 
@@ -23,6 +24,7 @@ def test_parser_error(parser):
 
 def test_parse_filename(parser):
     """Test parser filename parsing."""
+    options = parsers.Options()
     requires = []
     links = []
     requirements = []
@@ -34,7 +36,7 @@ def test_parse_filename(parser):
 
     with mock.patch.object(pipreq, 'parse_requirements') as pip:
         pip.return_value = requirements
-        reqs_result, links_result = parser.parse_file('requirements.txt')
-    pip.assert_called_once_with('requirements.txt')
+        reqs_result, links_result = parser.parse_file('requirements.txt', options=options)
+    pip.assert_called_once_with('requirements.txt', options=options)
     assert sorted(reqs_result) == sorted(requires)
     assert sorted(links_result) == sorted(links)

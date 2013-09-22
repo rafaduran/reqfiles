@@ -8,9 +8,14 @@ from . import exceptions as exc
 LOG = logging.getLogger(__name__)
 
 
+class Options(object):
+    default_vcs = ''
+    skip_requirements_regex = ''
+
+
 class Parser(object):
     """Provide the requirement files parsing."""
-    def parse_file(self, filename):
+    def parse_file(self, filename, options=None):
         """Parse given file by name.
 
         Params:
@@ -21,9 +26,12 @@ class Parser(object):
             string representation of the given requeriment and the second is a
             find link or ``None``.
         """
+        if not options:
+            options = Options()
+
         reqs = []
         links = []
-        for req in pipreq.parse_requirements(filename):
+        for req in pipreq.parse_requirements(filename, options=options):
             reqstr, link = self.parse(req)
             if link:
                 links.append(link)

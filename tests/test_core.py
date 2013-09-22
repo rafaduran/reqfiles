@@ -2,6 +2,7 @@
 import mock
 
 from reqfiles import core
+from reqfiles import parsers
 
 
 def test_reqfiles_mapping(reqfile):
@@ -29,7 +30,9 @@ def test_reqfiles_parse(reqfile, reqs, links):
         mocked.return_value = reqs
         reqfile.parse(reqfiles)
     assert len(links) > 0
-    mocked.assert_called_once_with(reqfiles[0])
+    assert mocked.call_count == 1
+    assert list(mocked.call_args_list[0][0]) == reqfiles
+    assert type(mocked.call_args_list[0][1]['options']) == parsers.Options
     expected = dict(core.SETUPTOOLS_KEYS)
     expected.update({
         'install_requires': [
