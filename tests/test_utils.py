@@ -43,7 +43,8 @@ def test_plugin_mount():
     assert 0 == len(Meta.plugins)
 
     with pytest.raises(TypeError):
-        class A(Meta): pass
+        class A(Meta):
+            pass
         A()
     assert 1 == len(Meta.plugins)
 
@@ -52,3 +53,26 @@ def test_plugin_mount():
             return value
     assert 2 == len(Meta.plugins)
     assert B().test(1) == 1
+
+
+def test_plugin_meta_class():
+    """Test PluginMetaClass"""
+    Meta = utils.PluginMetaClass('Meta', object, foo='foo', baz=lambda x: 'baz',
+                                 spam=abc.abstractmethod(lambda x: x))
+
+    class Meta1(Meta):
+        def spam(self):
+            return 'spam'
+
+    class Meta2(Meta):
+        pass
+
+    assert Meta.plugins == [Meta1, Meta2]
+
+    meta1 = Meta1()
+    assert meta1.foo == 'foo'
+    assert meta1.baz() == 'baz'
+    assert meta1.spam() == 'spam'
+
+    with pytest.raises(TypeError):
+        Meta2()

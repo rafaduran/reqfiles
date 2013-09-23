@@ -52,3 +52,13 @@ class PluginMount(abc.ABCMeta):
             # Simply appending it to the list is all that's needed to keep
             # track of it later.
             cls.plugins.append(cls)
+
+
+def PluginMetaClass(name, *bases, **attrs):
+    """Metaclass trick to get python2/3 compat.
+
+    Abstract methods must be defined into the mataclass instead of the base
+    classes, so that ABCMeta can do it's magic. See http://goo.gl/azOTtq for
+    further information about metaclasses in Python 2 and Python 3.
+    """
+    return PluginMount(name, bases, attrs)
