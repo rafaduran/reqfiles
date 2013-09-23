@@ -49,9 +49,9 @@ class BaseClassifier(object):
 
 
 def check(self, filename):
-    """Returns the setup keyword if the given filename matchs criteria or None.
+    """Returns the setup keyword if the given filename match criteria or None.
 
-    Criteria is the classification rules that provide all calssifiers.
+    Criteria is the classification rules that provide all classifiers.
 
     Params:
         ``filename``: File name to be classified.
@@ -88,7 +88,7 @@ Classifier = utils.PluginMetaClass('Classifier',
 
 
 class RegexClassifierMixin(object):
-    """Provide regex based classifcation."""
+    """Provide regex based classification."""
     regex = None
 
     def get_regex(self):
@@ -103,7 +103,7 @@ class RegexClassifierMixin(object):
 
 
 class NamesClassifierMixin(object):
-    """Provide list based classifcation."""
+    """Provide list based classification."""
     names = None
     key_keyword = None
 
