@@ -1,6 +1,8 @@
 """Tests for reqfiles.system"""
 import mock
 
+from reqfiles import system
+
 
 def test_python_version_26(pyver):
     """Tests PythonVersion for python2.6"""
@@ -84,3 +86,15 @@ def test_os_version_debian(dist, oscollector):
     """Tests OS version for Debian"""
     dist.return_value = ('debian', '6.0.6', '')
     assert oscollector.collect({})['os_version'] == '6.0.6'
+
+
+@mock.patch('reqfiles.system.Collector.plugins')
+def test_collect_all(plugins):
+    plugin = mock.Mock()
+    plugins.__iter__.return_value = (plugin, plugin)
+    data = {}
+    system.collect_all(data)
+    assert plugin.call_count == 2
+    assert plugin.return_value.collect.call_count == 2
+    calls = [mock.call(data), mock.call(data)]
+    assert plugin.return_value.collect.call_args_list == calls

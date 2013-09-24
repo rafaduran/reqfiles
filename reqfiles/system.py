@@ -16,9 +16,24 @@ def collect(self):
     """Collect current plugin information and return it as a dict."""
 
 
+def collect_all(data=None):
+    """Collect all plugin information and return it as a dict.
+
+    This method is provided also as
+    :py:classmethod:`reqfiles.system.Collect.collect_all."""
+    if not data:
+        data = {}
+
+    for plugin in Collector.plugins:
+        plugin().collect(data)
+
+    return data
+
+
 Collector = utils.PluginMetaClass('Collector',
                                   BaseCollector,
                                   __doc__=BaseCollector.__doc__,
+                                  collect_all=staticmethod(collect_all),
                                   collect=abc.abstractmethod(collect))
 
 
