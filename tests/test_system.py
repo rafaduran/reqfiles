@@ -49,6 +49,13 @@ def test_os_faminly_ubuntu(dist, oscollector):
     assert oscollector.collect()['os_family'] == 'debian'
 
 
+@mock.patch('platform.dist')
+def test_os_faminly_debian(dist, oscollector):
+    """Tests OS Family for Debian"""
+    dist.return_value = ('debian', '6.0.6', '')
+    assert oscollector.collect()['os_family'] == 'debian'
+
+
 @mock.patch('platform.mac_ver')
 @mock.patch('platform.dist')
 def test_os_version_mac(dist, mac_ver, oscollector):
@@ -70,3 +77,10 @@ def test_os_version_ubuntu(dist, oscollector):
     """Tests OS version for Ubuntu"""
     dist.return_value = ('Ubuntu', '12.04', 'precise')
     assert oscollector.collect()['os_version'] == '12.04'
+
+
+@mock.patch('platform.dist')
+def test_os_version_debian(dist, oscollector):
+    """Tests OS version for Debian"""
+    dist.return_value = ('debian', '6.0.6', '')
+    assert oscollector.collect()['os_version'] == '6.0.6'
