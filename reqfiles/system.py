@@ -24,8 +24,9 @@ Collector = utils.PluginMetaClass('Collector',
 
 class PythonVersion(Collector):
     """Collects information about the Python version."""
-    def collect(self):
-        return {'py_version': '{ver.major}{ver.minor}'.format(ver=sys.version_info)}
+    def collect(self, data):
+        data['py_version'] = '{ver.major}{ver.minor}'.format(ver=sys.version_info)
+        return data
 
 
 class OS(Collector):
@@ -37,8 +38,7 @@ class OS(Collector):
         'debian': 'debian',
     }
 
-    def collect(self):
-        data = {}
+    def collect(self, data):
         dist = platform.dist()
         mac_ver = platform.mac_ver()
         if dist[0]:
