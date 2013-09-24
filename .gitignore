@@ -13,3 +13,4 @@ dist
 .tox/
 htmlcov/
 junit-*.xml
+.vagrant/
