@@ -50,3 +50,15 @@ def sreqfile(reqfile, reqstrings, links):
 def rfc_classifier():
     from reqfiles import classifiers
     return classifiers.RequirementsFilesClassifier()
+
+
+@pytest.fixture
+def pyver():
+    from reqfiles import system
+    return system.PythonVersion()
+
+
+@pytest.fixture
+def oscollector():
+    from reqfiles import system
+    return system.OS()
