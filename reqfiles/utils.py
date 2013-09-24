@@ -54,7 +54,7 @@ class PluginMount(abc.ABCMeta):
             cls.plugins.append(cls)
 
 
-def PluginMetaClass(name, *bases, **attrs):
+def PluginMetaClass(name, *bases, **attrs):  # noqa
     """Metaclass trick to get python2/3 compat.
 
     Abstract methods must be defined into the mataclass instead of the base
