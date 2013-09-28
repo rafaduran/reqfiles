@@ -62,3 +62,10 @@ def PluginMetaClass(name, *bases, **attrs):  # noqa
     further information about metaclasses in Python 2 and Python 3.
     """
     return PluginMount(name, bases, attrs)
+
+
+def read_first_line(filename):
+    """Read first line of the given file by filename."""
+    with open(filename, 'rt') as file_:
+        firstline = file_.readline()
+    return firstline

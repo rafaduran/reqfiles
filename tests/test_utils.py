@@ -76,3 +76,9 @@ def test_plugin_meta_class():
 
     with pytest.raises(TypeError):
         Meta2()
+
+
+def test_read_first_line(filename_firstline):
+    """Tests reading first line from a file"""
+    filename, firstline = filename_firstline
+    assert utils.read_first_line(filename) == firstline

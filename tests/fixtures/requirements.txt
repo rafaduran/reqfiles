@@ -1,0 +1,5 @@
+# reqfiles: py_version>'26', os_family==centos
+
+foo
+spam
+baz>=1.2.3

@@ -1,7 +1,11 @@
 '''pytest conftest moduele'''
+import os
+
 import pytest
 
 from . import common
+
+ROOT = os.path.abspath(os.path.dirname(__file__))
 
 
 @pytest.fixture
@@ -62,3 +66,15 @@ def pyver():
 def oscollector():
     from reqfiles import system
     return system.OS()
+
+
+@pytest.fixture
+def pythonfilter():
+    from reqfiles import filters
+    return filters.PythonVersionFilter()
+
+
+@pytest.fixture
+def filename_firstline():
+    return (os.path.join(ROOT, 'fixtures/requirements.txt'),
+            "# reqfiles: py_version>'26', os_family==centos\n")
